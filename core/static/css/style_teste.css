@@ -1,0 +1,14 @@
+.teste {
+    color: blue;
+    font-size: 40px;
+}
+
+footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    background-color: #212529
+
+}

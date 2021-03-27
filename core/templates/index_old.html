@@ -1,0 +1,16 @@
+<!-- {% extends 'base.html' %} -->
+
+
+{% block main %}
+
+<div class='teste'>Bom dia pessoal!!!</div>
+<div>
+    {% for empregado in empregados %}
+        <li>{{empregado.nome}}</li>
+    {% endfor %}
+</div>
+
+{% include "footer.html" %} <!-- including part of code from another files -->
+
+{% endblock %}
+
