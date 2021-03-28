@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block main%}
-
-    <h1>Resultados para {{ticker}} </h1>
     
-      {{dados_acao}}
-    
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Resultados para {{ticker}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Muito simples ... </h6>
+            <p class="card-text">Para o {{algoritmos}} hoje é dia de <strong>{{class_naive}}</strong></p>
+        </div>
+    </div>
 
 {% include 'footer.html'%}
 

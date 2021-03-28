@@ -96,7 +96,6 @@ def resultados(request):
     lista.clear()
 
     ## criando coluna situacao - Realidade
-    lista = []
     for i in range(0, dados_acao.shape[0]):
         if (dados_acao['Variation'][i]>0):
             lista.append('compra')
@@ -106,8 +105,6 @@ def resultados(request):
     lista.clear()
 
     ## médias móveis (mm9, mm21)
-
-    lista = []
     ini = 0
     fim = 9
     for i in range(0, 9):
@@ -119,7 +116,6 @@ def resultados(request):
     dados_acao['mm9'] = lista
     lista.clear()
     
-    lista = []
     ini = 0
     fim = 21
     for i in range(0, 21):
@@ -132,13 +128,88 @@ def resultados(request):
     lista.clear()
 
     ##bandas de bolingner (superior e inferior)
+    lista = []
+    lista.clear()
+    ini = 0
+    fim = 21
+    for i in range(0, 21):
+        lista.append(dados_acao.iloc[i, 3])
+    for i in range(21, len(dados_acao.Close)):
+        lista.append(dados_acao.iloc[ini:fim, 3].mean() +
+                    2*(dados_acao.iloc[ini:fim, 3].std()))
+        ini += 1
+        fim += 1
+    dados_acao['bb_sup'] = lista
 
-    
+    lista = []
+    lista.clear()
+    ini = 0
+    fim = 21
+    for i in range(0, 21):
+        lista.append(dados_acao.iloc[i, 3])
+    for i in range(21, len(dados_acao.Close)):
+        lista.append(dados_acao.iloc[ini:fim, 3].mean() -
+                    2*(dados_acao.iloc[ini:fim, 3].std()))
+        ini += 1
+        fim += 1
+    dados_acao['bb_inf'] = lista
+    lista.clear()
+
+    ## Gerando padrão para cálculo do algortimo
+    for i in range(0, len(dados_acao.Close)):
+        if ((dados_acao.Close[i] > dados_acao.mm21[i]) and (dados_acao.mm9[i] > dados_acao.mm21[i]) and (dados_acao.Close[i] > dados_acao.bb_inf[i])):
+            lista.append('compra')
+        else:
+            lista.append('venda')
+    dados_acao['previsao inicial'] = lista
+
+    ## calculando as previsoes
+    ## preparando dados de treino e teste
+    X = dados_acao.iloc[:, [8, 9, 10, 11]].values
+    y = dados_acao.iloc[:, 12].values
+
+    encoder = LabelEncoder()
+    X[:, 0] = encoder.fit_transform(X[:, 0])
+    X[:, 1] = encoder.fit_transform(X[:, 1])
+    X[:, 2] = encoder.fit_transform(X[:, 2])
+    X[:, 3] = encoder.fit_transform(X[:, 3])
+    y = encoder.fit_transform(y)
+    X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.2)
+
+    ## Treinando usando naive bayes
+    for i in range(10):
+        kfold = StratifiedKFold(
+        n_splits=20, shuffle=True, random_state=i)
+    resultados_naive = []
+    matrizes = []
+    for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
+        classificador_naive = GaussianNB()
+        classificador_naive.fit(X[id_treino], y[id_treino])
+        predicao = classificador_naive.predict(X[id_teste])
+        resultados_naive.append(
+            accuracy_score(y[id_teste], predicao))
+
+    media_naive = np.array(resultados_naive).mean()
+    desvio_naive = np.array(resultados_naive).std()
+
+    ##Pegando os valores para predição
+    p1 = dados_acao.iloc[-9:, 3].mean()
+    p2 = dados_acao.iloc[-21:, 3].mean()
+    p3 = p2 + 2*(dados_acao.iloc[-21:, 3].std())
+    p4 = p2 - 2*(dados_acao.iloc[-21:, 3].std())
+
+    class_naive = classificador_naive.predict_proba([[p1, p2, p3, p4]])
+    if class_naive[0][0] == 0:
+        class_naive = 'compra'
+    else:
+        class_naive = 'venda'
+
+    algoritmos = 'Naive Bayes'
 
     print(dados_acao.shape[0])
     print(dados_acao.Variation)
     if acoesForm.is_valid():
-        return render(request, 'resultados.html', {'acoesForm':acoesForm, 'dados_acao': dados_acao, 'ticker': ticker})
+        return render(request, 'resultados.html', {'acoesForm':acoesForm, 'dados_acao': dados_acao, 'ticker': ticker, 'class_naive': class_naive, 'algoritmos': algoritmos})
 
 # Métodos para pegar o histórico da ação
 
