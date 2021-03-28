@@ -158,7 +158,7 @@ def resultados(request):
 
         ## Gerando padrão para cálculo do algortimo
         for i in range(0, len(dados_acao.Close)):
-            if ((dados_acao.Close[i] > dados_acao.mm21[i]) and (dados_acao.mm9[i] > dados_acao.mm21[i]) and (dados_acao.Close[i] > dados_acao.bb_inf[i])):
+            if ((dados_acao.Close[i] > dados_acao.mm9[i]) and (dados_acao.Close[i] > dados_acao.mm21[i])):
                 lista.append('compra')
             else:
                 lista.append('venda')
@@ -200,17 +200,17 @@ def resultados(request):
         p4 = p2 - 2*(dados_acao.iloc[-21:, 3].std())
 
         class_naive = classificador_naive.predict_proba([[p1, p2, p3, p4]])
-        if class_naive[0][0] == 0:
-            class_naive = 'compra'
+        if class_naive[0][0] > class_naive[0][1]:
+            class_naive_verbose = 'compra'
         else:
-            class_naive = 'venda'
+            class_naive_verbose = 'venda'
 
         algoritmos = 'Naive Bayes'
 
         print(dados_acao.shape[0])
         print(dados_acao.Variation)
         if acoesForm.is_valid():
-            return render(request, 'resultados.html', {'acoesForm':acoesForm, 'start':start[0:4], 'dados_acao': dados_acao, 'ticker': ticker, 'class_naive': class_naive, 'algoritmos': algoritmos})
+            return render(request, 'resultados.html', {'acoesForm':acoesForm, 'start':start[0:4], 'dados_acao': dados_acao, 'ticker': ticker, 'class_naive': class_naive, 'class_naive_verbose': class_naive_verbose,'algoritmos': algoritmos})
     except:
         return render(request, 'erro_na_busca.html', {'ticker': ticker})
 
