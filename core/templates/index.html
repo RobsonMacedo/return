@@ -4,6 +4,7 @@
 {% block main %}
 {% load crispy_forms_tags %}
 <div class="container">
+    <p>
     <form action="{% url 'resultados' %}" method="POST">
         {% csrf_token %}
         <h1> Simulador @Return </h1>
@@ -19,6 +20,7 @@
         <button type="submit" class="btn btn-primary">Calcula previsões</button>
 
     </form>
+    </p>
     <p>   
     <div class="card" style="width: 18rem;">
         <div class="card-body">
