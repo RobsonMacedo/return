@@ -1,4 +1,5 @@
-#! C:\\code\\pessoais\\myvenv\\scripts python
+#!/usr/bin/env PYTHONWARNINGS=ignore python
+
 """Django's command-line utility for administrative tasks."""
 import os
 import sys

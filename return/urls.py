@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import re
 from .views import home
-from core.views import empregados, empregado_detalhe, empregado_Robson, empregado_por_nome, resultados
+from core.views import empregados, empregado_detalhe, empregado_Robson, empregado_por_nome, resultados, resultado_detalhe
 
 
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('empregado/<int:id>/', empregado_detalhe),
     path('empregado/<str:nome>/', empregado_por_nome),
     path('resultados/', resultados, name='resultados'),
+    path('resultados/detalhe/<str:algo>', resultado_detalhe, name='resultado_detalhe'),
     path('', home, name='home'),
     
 ]

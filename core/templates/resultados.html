@@ -1,14 +1,62 @@
 {% extends 'base.html' %}
 {% block main%}
-    
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Resultados para {{ticker}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-            <p class="card-text">Para o {{algoritmos}} hoje é dia de <strong>{{class_naive}} - {{class_naive_verbose}}</strong></p>
-        </div>
-    </div>
+    <p>
+        <div class="container ">
+            <div class="row">
+                <p>Resultados para {{ticker}}</p>
+                {% if algo == '1' or algo == '0' %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Nayve Bayes</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_naive_verbose}} - {{class_naive}}</strong></p>
+                        <a href="detalhe/{{algo}}">Detalhar...</a>
+                    </div>
+                </div>
+                {% endif %}
 
+                {% if algo == '2' or algo == '0' %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Árvores de Decisão</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_arvores_verbose}} - {{class_arvores}}</strong></p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if algo == '3' or algo == '0' %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Random Forest</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_random_verbose}} - {{class_random}}</strong></p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if algo == '4' or algo == '0' %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">KNN</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_knn_verbose}} - {{class_knn}}</strong></p>
+                    </div>
+                </div>
+                {% endif %}
+               
+                {% if algo == '5' or algo == '0' %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">SVC</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_svc_verbose}} - {{class_svc}}</strong></p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>        
+        </div>
+    </p>
 {% include 'footer.html'%}
 
 {% endblock%}

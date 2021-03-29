@@ -8,6 +8,7 @@ class Acoes(models.Model):
     
     acao = models.CharField(max_length=10000)
     previsao_data_ini = models.DateField() # código acertado / select colocado
+    algo = models.CharField(max_length=30)
 
     
 class Simulador(models.Model):

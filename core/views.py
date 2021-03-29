@@ -6,6 +6,7 @@ from faker import Faker
 from .models import Empregado, Cpf, Departamento, Telefone
 import random
 from .forms import AcoesForm
+from django.http import HttpResponseRedirect
 
 # bibliotecas para a conexão com o yahoofinance
 
@@ -82,6 +83,7 @@ def resultados(request):
     data_passada = datetime.strptime(acoesForm['field'].data, '%Y-%m-%d').date()
     # pegando o histórico da ação
     start = acoesForm['field'].data
+    algo = acoesForm['algo'].data
     end = datetime.now().strftime('%Y-%m-%d')
     ticker = str.upper(acoesForm['acao'].data) + '.SA'
     try:
@@ -177,7 +179,15 @@ def resultados(request):
         y = encoder.fit_transform(y)
         X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.2)
 
+        ##Pegando os valores para predição
+        p1 = dados_acao.iloc[-9:, 3].mean()
+        p2 = dados_acao.iloc[-21:, 3].mean()
+        p3 = p2 + 2*(dados_acao.iloc[-21:, 3].std())
+        p4 = p2 - 2*(dados_acao.iloc[-21:, 3].std())
+
+
         ## Treinando usando naive bayes
+    
         for i in range(10):
             kfold = StratifiedKFold(
             n_splits=20, shuffle=True, random_state=i)
@@ -192,27 +202,126 @@ def resultados(request):
 
         media_naive = np.array(resultados_naive).mean()
         desvio_naive = np.array(resultados_naive).std()
-
-        ##Pegando os valores para predição
-        p1 = dados_acao.iloc[-9:, 3].mean()
-        p2 = dados_acao.iloc[-21:, 3].mean()
-        p3 = p2 + 2*(dados_acao.iloc[-21:, 3].std())
-        p4 = p2 - 2*(dados_acao.iloc[-21:, 3].std())
-
         class_naive = classificador_naive.predict_proba([[p1, p2, p3, p4]])
         if class_naive[0][0] > class_naive[0][1]:
             class_naive_verbose = 'compra'
         else:
             class_naive_verbose = 'venda'
+        
 
-        algoritmos = 'Naive Bayes'
+        ## Treinando usando arvores de decisao
+    
+        for i in range(10):
+            kfold = StratifiedKFold(
+                n_splits=20, shuffle=True, random_state=i)
+            resultados_arvores = []
+            matrizes = []
+            for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
+                classificador_arvores = DecisionTreeClassifier()
+                classificador_arvores.fit(X[id_treino], y[id_treino])
+                predicao = classificador_arvores.predict(X[id_teste])
+                resultados_arvores.append(
+                    accuracy_score(y[id_teste], predicao))
 
-        print(dados_acao.shape[0])
-        print(dados_acao.Variation)
+        media_arvores = np.array(resultados_arvores).mean()
+        desvio_arvores = np.array(resultados_arvores).std()
+        class_arvores = classificador_arvores.predict_proba([[p1, p2, p3, p4]])
+
+        if class_arvores[0][0] > class_arvores[0][1]:
+            class_arvores_verbose = 'compra'
+        else:
+            class_arvores_verbose = 'venda'
+
+        ## Treinando usando random forest
+        for i in range(10):
+            kfold = StratifiedKFold(
+                n_splits=20, shuffle=True, random_state=i)
+            resultados_RFC = []
+            matrizes = []
+            for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
+                classificador_RFC = RandomForestClassifier(n_estimators=5)
+                classificador_RFC.fit(X[id_treino], y[id_treino])
+                predicao = classificador_RFC.predict(X[id_teste])
+                resultados_RFC.append(
+                    accuracy_score(y[id_teste], predicao))
+
+        media_random = np.array(resultados_RFC).mean()
+        desvio_random = np.array(resultados_RFC).std()
+        class_random = classificador_RFC.predict_proba([[p1, p2, p3, p4]])
+
+        if class_random[0][0] > class_random[0][1]:
+            class_random_verbose = 'compra'
+        else:
+            class_random_verbose = 'venda'
+
+        # KNN
+        for i in range(10):
+
+            kfold = StratifiedKFold(
+                n_splits=20, shuffle=True, random_state=i)
+            resultados_KNN_classifier = []
+            matrizes = []
+            for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
+                classificador_KNN = KNeighborsClassifier()
+                classificador_KNN.fit(X[id_treino], y[id_treino])
+                predicao = classificador_KNN.predict(X[id_teste])
+                resultados_KNN_classifier.append(
+                    accuracy_score(y[id_teste], predicao))
+
+        media_knn = np.array(resultados_KNN_classifier).mean()
+        desvio_knn = np.array(resultados_KNN_classifier).std()
+        class_knn = classificador_KNN.predict_proba([[p1, p2, p3, p4]])
+
+        if class_knn[0][0] > class_knn[0][1]:
+            class_knn_verbose = 'compra'
+        else:
+            class_knn_verbose = 'venda'
+
+        # SVC
+        for i in range(5):
+
+            kfold = StratifiedKFold(
+                n_splits=20, shuffle=True, random_state=i)
+            resultados_SVC = []
+            matrizes = []
+            for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
+                classificador_SVC = SVC(gamma='auto', probability=True)
+                classificador_SVC.fit(X[id_treino], y[id_treino])
+                predicao = classificador_SVC.predict(X[id_teste])
+                resultados_SVC.append(
+                    accuracy_score(y[id_teste], predicao))
+
+        media_svc = np.array(resultados_SVC).mean()
+        desvio_svc = np.array(resultados_SVC).std()  
+        class_svc = classificador_SVC.predict_proba([[p1, p2, p3, p4]]) 
+    
+        if class_svc[0][0] > class_svc[0][1]:
+            class_svc_verbose = 'compra'
+        else:
+            class_svc_verbose = 'venda'
+
+
+
+        context = { 'acoesForm':acoesForm, 
+                    'start':start[0:4], 
+                    'dados_acao': dados_acao, 
+                    'ticker': ticker, 
+                    'class_naive_verbose': class_naive_verbose if class_naive_verbose else 0,  
+                    'class_arvores_verbose': class_arvores_verbose if class_naive_verbose else 0,
+                    'class_random_verbose': class_random_verbose if class_random_verbose else 0,
+                    'class_knn_verbose': class_knn_verbose if class_knn_verbose else 0,
+                    'class_svc_verbose': class_svc_verbose if class_svc_verbose else 0,
+                    'algo': algo}
+        
         if acoesForm.is_valid():
-            return render(request, 'resultados.html', {'acoesForm':acoesForm, 'start':start[0:4], 'dados_acao': dados_acao, 'ticker': ticker, 'class_naive': class_naive, 'class_naive_verbose': class_naive_verbose,'algoritmos': algoritmos})
+            return render(request, 'resultados.html', context)
     except:
+        
         return render(request, 'erro_na_busca.html', {'ticker': ticker})
 
-# Métodos para pegar o histórico da ação
+def resultado_detalhe(request, algo, ticker):
+    context = {'algo': algo, 'ticker': ticker}
+    return render(request, 'resultado_detalhe.html',context)
+
+
 
