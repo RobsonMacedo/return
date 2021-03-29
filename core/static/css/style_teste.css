@@ -12,3 +12,17 @@ footer {
     background-color: #212529
 
 }
+
+.not-visible{
+    display: none;
+}
+
+#spinner-box {
+    width:100px;
+    height:100px;
+    position:absolute;
+    top:30%;
+    left:50%;
+    margin-top:-50px;
+    margin-left:-50px;
+}

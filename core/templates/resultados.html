@@ -1,56 +1,60 @@
 {% extends 'base.html' %}
 {% block main%}
     <p>
-        <div class="container ">
+        <div id="data-box" class="container" >
             <div class="row">
                 <p>Resultados para {{ticker}}</p>
-                {% if algo == '1' or algo == '0' %}
+                {% if algo == 'Naive Bayes' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Nayve Bayes</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_naive_verbose}} - {{class_naive}}</strong></p>
-                        <a href="detalhe/{{algo}}">Detalhar...</a>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_naive_verbose}}</strong></p>
+                        <a href="detalhe/{{algo}}">mais...</a>
                     </div>
                 </div>
                 {% endif %}
 
-                {% if algo == '2' or algo == '0' %}
+                {% if algo == 'arvores' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Árvores de Decisão</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_arvores_verbose}} - {{class_arvores}}</strong></p>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_arvores_verbose}}</strong></p>
+                        <a href="detalhe/{{algo}}">mais...</a>
                     </div>
                 </div>
                 {% endif %}
                 
-                {% if algo == '3' or algo == '0' %}
+                {% if algo == 'random' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">Random Forest</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_random_verbose}} - {{class_random}}</strong></p>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_random_verbose}}</strong></p>
+                        <a href="detalhe/{{algo}}">mais...</a>
                     </div>
                 </div>
                 {% endif %}
                 
-                {% if algo == '4' or algo == '0' %}
+                {% if algo == 'knn' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">KNN</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_knn_verbose}} - {{class_knn}}</strong></p>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_knn_verbose}}</strong></p>
+                        <a href="detalhe/{{algo}}">mais...</a>
                     </div>
                 </div>
                 {% endif %}
                
-                {% if algo == '5' or algo == '0' %}
+                {% if algo == 'svc' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">SVC</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
-                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_svc_verbose}} - {{class_svc}}</strong></p>
+                        <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_svc_verbose}}</strong></p>
+                        <a href="detalhe/{{algo}}">mais...</a>
                     </div>
                 </div>
                 {% endif %}

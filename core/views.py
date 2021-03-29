@@ -7,6 +7,7 @@ from .models import Empregado, Cpf, Departamento, Telefone
 import random
 from .forms import AcoesForm
 from django.http import HttpResponseRedirect
+import json
 
 # bibliotecas para a conexão com o yahoofinance
 
@@ -300,6 +301,20 @@ def resultados(request):
         else:
             class_svc_verbose = 'venda'
 
+        ## Setando variaveis de sessão
+
+        request.session['class_naive'] = str(class_naive)
+        request.session['class_arvores'] = str(class_arvores)
+        request.session['class_random'] = str(class_random)
+        request.session['class_knn'] = str(class_knn)
+        request.session['class_svc'] = str(class_svc)
+        
+        """ request.session['class_naive_verbose'] = str(class_naive_verbose)
+        request.session['class_arvores_verbose'] = str(class_arvores_verbose)
+        request.session['class_random_verbose'] = str(class_random_verbose)
+        request.session['class_knn_verbose'] = str(class_knn_verbose)
+        request.session['class_svc_verbose'] = str(class_svc_verbose) """
+
 
 
         context = { 'acoesForm':acoesForm, 
@@ -319,8 +334,34 @@ def resultados(request):
         
         return render(request, 'erro_na_busca.html', {'ticker': ticker})
 
-def resultado_detalhe(request, algo, ticker):
-    context = {'algo': algo, 'ticker': ticker}
+def resultado_detalhe(request, algo):
+
+    #Recuperando varáveis de sessão
+    
+    class_naive = request.session['class_naive']
+    class_arvores = request.session['class_arvores']
+    class_random = request.session['class_random']
+    class_knn = request.session['class_knn']
+    class_svc = request.session['class_svc']
+    
+    class_naive_verbose = request.session['class_naive_verbose']
+    class_arvores_verbose = request.session['class_arvores_verbose']
+    class_random_verbose = request.session['class_random_verbose']
+    class_knn_verbose = request.session['class_knn_verbose']
+    class_svc_verbose = request.session['class_svc_verbose']
+    
+    context = { 'algo': algo, 
+                'class_naive': class_naive,
+                'class_arvores': class_arvores,
+                'class_random': class_random,
+                'class_knn': class_knn,
+                'class_svc': class_svc,
+                'class_naive_verbose': class_naive_verbose,
+                'class_arvores_verbose': class_arvores_verbose,
+                'class_random_verbose': class_random_verbose,
+                'class_knn_verbose': class_knn_verbose,
+                'class_svc_verbose': class_svc_verbose,
+    }
     return render(request, 'resultado_detalhe.html',context)
 
 

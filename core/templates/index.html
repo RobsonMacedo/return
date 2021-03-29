@@ -3,7 +3,17 @@
 
 {% block main %}
 {% load crispy_forms_tags %}
-<div class="container">
+<!-- Spinner -->
+
+<div id="spinner-box" class='container text-center mt-3 not-visible'>
+    <div class="spinner-grow text-primary" role="status">
+        
+    </div>
+    <div class="text-primary">gerando previsões...</div>
+</div>
+
+<!-- Ínicio -->
+<div id="container-index" class="container">
     <p>
     <form action="{% url 'resultados' %}" method="POST">
         {% csrf_token %}
@@ -21,7 +31,7 @@
         </div>
         
         
-        <button type="submit" class="btn btn-primary">Calcula previsões</button>
+        <button id="button-search" type="submit" class="btn btn-primary">Calcula previsões</button>
 
     </form>
     </p>

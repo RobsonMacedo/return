@@ -3,16 +3,73 @@
 {% block main %}
     <div class="container">
 
-        <div class="card" style="width: auto;">
-            <div class="card-body">
-                <h5 class="card-title">{{algo}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted"></h6>
-                <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_naive_verbose}} - {{class_naive}}</strong></p>
-                <a href='#'>Voltar ...</a>
-            </div>
-        </div>
-
         
+        {% if algo == 'Naive Bayes' %}
+        <p>
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">{{algo}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{class_naive_verbose}}</h6>
+                    <p class="card-text">O Algoritmo Naive Bayes funciona como classificador e baseia-se na probabilidade de cada evento ocorrer, desconsiderando a correlação entre features. Por ter uma parte matemática relativamente simples, possui um bom desempenho e precisa de poucas observações para ter uma boa acurácia. Uma aplicação bastante comum é para identificar se um determinado e-mail é um spam ou não.
+                      </p>
+                    <p>A probalidade para <strong>{{class_naive_verbose}}</strong> é de <strong>{{class_naive}}</strong></p> 
+                    <a href='#'>Voltar ...</a>
+                </div>
+            </div>
+        </p>
+        {% endif %}
 
+        {% if algo == 'arvores' %}
+        <p>
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">{{algo}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{class_arvores_verbose}}</h6>
+                    <p class="card-text">Uma árvore de decisão é uma ferramenta de suporte à tomada de decisão que usa um gráfico no formato de árvore e demonstra visualmente as condições e as probabilidades para se chegar a resultados. O algoritmo utilizado para chegar na representação visual da árvore pertence ao grupo de aprendizado de máquina supervisionado, e funciona tanto para regressão quanto para classificação. teste 2</strong></p>
+                    <a href='#'>Voltar ...</a>
+                </div>
+            </div>
+        </p>
+        {% endif %}
+
+        {% if algo == 'random' %}
+        <p>
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">{{algo}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{class_random_verbose}}</h6>
+                    <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_random_verbose}} - {{class_random}}</strong></p>
+                    <a href='#'>Voltar ...</a>
+                </div>
+            </div>
+        </p>
+        {% endif %}
+
+        {% if algo == 'knn' %}
+        <p>
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">{{algo}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{class_knn_verbose}}</h6>
+                    <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_knn_verbose}} - {{class_knn}}</strong></p>
+                    <a href='#'>Voltar ...</a>
+                </div>
+            </div>
+        </p>
+        {% endif %}
+        
+        {% if algo == 'svc' %}
+        <p>
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-title">{{algo}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{class_svc}}</h6>
+                    <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_svc_verbose}} - {{class_svc}}</strong></p>
+                    <a href='#'>Voltar ...</a>
+                </div>
+            </div>
+        </p>
+        {% endif %}
     </div>
+{% include 'footer.html'%}
 {% endblock %}
