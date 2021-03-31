@@ -1,27 +1,24 @@
-function olaMundo()
-{
-    alert('Testando o Js!')
-}
+
 
 
 window.onload = function(){
-    const spinnerBox = document.getElementById('spinner-box') 
-    const buttonSearch = document.getElementById('button-search')
-    const containerIndex = document.getElementById('container-index')
+    let spinnerBox = document.getElementById('spinner-box') 
+    let buttonSearch = document.getElementById('button-search')
+    let containerIndex = document.getElementById('container-index')
     
-    buttonSearch.onclick = function(){
-    containerIndex.classList.add('not-visible')
-    spinnerBox.classList.remove('not-visible')
-    $.ajax({
-        type:'POST',
-        url:'/resultados/',
-        success:function(response){
-            spinnerBox.classList.add('not-visible')
-        },
-        error:function(error){
-            console.log(error)
-        }
-        })
-    }
-}
 
+    buttonSearch.addEventListener('click', function(){
+        containerIndex.classList.add('not-visible')
+        spinnerBox.classList.remove('not-visible')
+    })    
+    
+    
+} 
+
+/* testar isso novamente, jogar um script dentro do código direto pra testar */
+/* let dataBox = document.getElementById('data-box')
+dataBox.onload = function(e){
+        console.log(e)
+        Swal.fire('oi')
+    }
+ */

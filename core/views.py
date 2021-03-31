@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Empregado, Cpf, Departamento, Telefone
-from django_seed import Seed
 from faker import Faker
-from .models import Empregado, Cpf, Departamento, Telefone
 import random
 from .forms import AcoesForm
+from .models import Acoes, Algos
 from django.http import HttpResponseRedirect
 import json
 
@@ -50,34 +48,6 @@ from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 import pandas_datareader as pdr
 
-
-# trabalhar numa forma de fazer seed 
-# Esse códi faz fake de nome e sobrenome
-""" fake = Faker()
-nomes = list()
-sobrenomes = list()
-for _ in range(3):
-    nomes.append(fake.first_name())
-    sobrenomes.append(fake.last_name())
-print(nomes)
-print(sobrenomes) """
-
-def empregados(request, Cliente):
-    return HttpResponse('lista de clientes')
-
-def empregado_Robson(Cliente):
-    empregado = Cliente
-    empregado.nome = 'Robson'
-    empregado.sobrenome = 'Macedo'
-    empregado.save()
-    return HttpResponse('empregado salvo com sucesso')
-
-def empregado_detalhe(request, id):
-    empregado = Empregado.objects.get(id=id)
-    return HttpResponse('empregado: ' + empregado.nome)    
-
-def empregado_por_nome(request, nome):
-    return HttpResponse('empregado: ' + str(nome)) 
 
 def resultados(request):
     acoesForm = AcoesForm(request.POST or None)
@@ -161,11 +131,12 @@ def resultados(request):
 
         ## Gerando padrão para cálculo do algortimo
         for i in range(0, len(dados_acao.Close)):
-            if ((dados_acao.Close[i] > dados_acao.mm9[i]) and (dados_acao.Close[i] > dados_acao.mm21[i])):
+            if ((dados_acao.Close[i] > dados_acao.mm9[i]) and (dados_acao.Close[i] > dados_acao.mm21[i]) and (dados_acao.mm9[i] > dados_acao.mm21[i])):
                 lista.append('compra')
             else:
                 lista.append('venda')
         dados_acao['previsao inicial'] = lista
+        print(dados_acao)
 
         ## calculando as previsoes
         ## preparando dados de treino e teste
@@ -309,11 +280,23 @@ def resultados(request):
         request.session['class_knn'] = str(class_knn)
         request.session['class_svc'] = str(class_svc)
         
-        """ request.session['class_naive_verbose'] = str(class_naive_verbose)
+        request.session['media_naive'] = str(round(media_naive, 2))
+        request.session['media_arvores'] = str(round(media_arvores, 2))
+        request.session['media_random'] = str(round(media_random, 2))
+        request.session['media_knn'] = str(round(media_knn, 2))
+        request.session['media_svc'] = str(round(media_svc, 2))
+        
+        request.session['desvio_naive'] = str(round(desvio_naive, 2))
+        request.session['desvio_arvores'] = str(round(desvio_arvores, 2))
+        request.session['desvio_random'] = str(round(desvio_random, 2))
+        request.session['desvio_knn'] = str(round(desvio_knn,2))
+        request.session['desvio_svc'] = str(round(desvio_svc, 2))
+        
+        request.session['class_naive_verbose'] = str(class_naive_verbose)
         request.session['class_arvores_verbose'] = str(class_arvores_verbose)
         request.session['class_random_verbose'] = str(class_random_verbose)
         request.session['class_knn_verbose'] = str(class_knn_verbose)
-        request.session['class_svc_verbose'] = str(class_svc_verbose) """
+        request.session['class_svc_verbose'] = str(class_svc_verbose)
 
 
 
@@ -344,6 +327,18 @@ def resultado_detalhe(request, algo):
     class_knn = request.session['class_knn']
     class_svc = request.session['class_svc']
     
+    media_naive = request.session['media_naive']
+    media_arvores = request.session['media_arvores']
+    media_random = request.session['media_random']
+    media_knn = request.session['media_knn']
+    media_svc = request.session['media_svc']
+    
+    desvio_naive = request.session['desvio_naive']
+    desvio_arvores = request.session['desvio_arvores']
+    desvio_random = request.session['desvio_random']
+    desvio_knn = request.session['desvio_knn']
+    desvio_svc = request.session['desvio_svc']
+    
     class_naive_verbose = request.session['class_naive_verbose']
     class_arvores_verbose = request.session['class_arvores_verbose']
     class_random_verbose = request.session['class_random_verbose']
@@ -356,6 +351,16 @@ def resultado_detalhe(request, algo):
                 'class_random': class_random,
                 'class_knn': class_knn,
                 'class_svc': class_svc,
+                'media_naive': media_naive,
+                'media_arvores': media_arvores,
+                'media_random': media_random,
+                'media_knn': media_knn,
+                'media_svc': media_svc,
+                'desvio_naive': desvio_naive,
+                'desvio_arvores': desvio_arvores,
+                'desvio_random': desvio_random,
+                'desvio_knn': desvio_knn,
+                'desvio_svc': desvio_svc,
                 'class_naive_verbose': class_naive_verbose,
                 'class_arvores_verbose': class_arvores_verbose,
                 'class_random_verbose': class_random_verbose,

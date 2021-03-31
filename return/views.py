@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from core.models import Empregado
+from core.models import Acoes, Algos
 from core.forms import AcoesForm
 
 def home(request):

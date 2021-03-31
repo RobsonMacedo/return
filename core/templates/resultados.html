@@ -10,10 +10,12 @@
                         <h5 class="card-title">Nayve Bayes</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
                         <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_naive_verbose}}</strong></p>
-                        <a href="detalhe/{{algo}}">mais...</a>
+                        <a href="detalhe/Naive%20Bayes">mais...</a>
                     </div>
                 </div>
                 {% endif %}
+
+                {{form.field.data}}
 
                 {% if algo == 'arvores' or algo == 'all' %}
                 <div class="card" style="width: 18rem;">
@@ -21,7 +23,7 @@
                         <h5 class="card-title">Árvores de Decisão</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
                         <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_arvores_verbose}}</strong></p>
-                        <a href="detalhe/{{algo}}">mais...</a>
+                        <a href="detalhe/arvores">mais...</a>
                     </div>
                 </div>
                 {% endif %}
@@ -32,7 +34,7 @@
                         <h5 class="card-title">Random Forest</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
                         <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_random_verbose}}</strong></p>
-                        <a href="detalhe/{{algo}}">mais...</a>
+                        <a href="detalhe/random">mais...</a>
                     </div>
                 </div>
                 {% endif %}
@@ -43,7 +45,7 @@
                         <h5 class="card-title">KNN</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
                         <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_knn_verbose}}</strong></p>
-                        <a href="detalhe/{{algo}}">mais...</a>
+                        <a href="detalhe/knn">mais...</a>
                     </div>
                 </div>
                 {% endif %}
@@ -54,13 +56,20 @@
                         <h5 class="card-title">SVC</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Data-base - {{start}}</h6>
                         <p class="card-text">Para este algoritmo hoje é dia de <strong>{{class_svc_verbose}}</strong></p>
-                        <a href="detalhe/{{algo}}">mais...</a>
+                        <a href="detalhe/svc">mais...</a>
                     </div>
                 </div>
                 {% endif %}
             </div>        
         </div>
     </p>
+
+    <script>
+
+        Swal.fire('oi')
+    
+
+    </script>
 {% include 'footer.html'%}
 
 {% endblock%}
