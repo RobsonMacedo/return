@@ -2,6 +2,7 @@
 
 
 window.onload = function(){
+    Swal.fire('olá')
     let spinnerBox = document.getElementById('spinner-box') 
     let buttonSearch = document.getElementById('button-search')
     let containerIndex = document.getElementById('container-index')

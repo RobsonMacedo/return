@@ -58,6 +58,7 @@ def resultados(request):
     end = datetime.now().strftime('%Y-%m-%d')
     ticker = str.upper(acoesForm['acao'].data) + '.SA'
     try:
+
         dados_acao = pdr.DataReader(ticker, 'yahoo', start, end)
 
         #tratando os dados
@@ -131,12 +132,12 @@ def resultados(request):
 
         ## Gerando padrão para cálculo do algortimo
         for i in range(0, len(dados_acao.Close)):
-            if ((dados_acao.Close[i] > dados_acao.mm9[i]) and (dados_acao.Close[i] > dados_acao.mm21[i]) and (dados_acao.mm9[i] > dados_acao.mm21[i])):
+            if ((dados_acao.Close[i] > dados_acao.mm21[i]) and (dados_acao.mm9[i] > dados_acao.mm21[i])):
                 lista.append('compra')
             else:
                 lista.append('venda')
-        dados_acao['previsao inicial'] = lista
-        print(dados_acao)
+        dados_acao['previsao_inicial'] = lista
+        print(dados_acao.tail(60))
 
         ## calculando as previsoes
         ## preparando dados de treino e teste
@@ -152,6 +153,11 @@ def resultados(request):
         X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=0.2)
 
         ##Pegando os valores para predição
+        """ p1 = dados_acao.iloc[-9:, 3].mean()
+        p2 = dados_acao.iloc[-21:, 3].mean()
+        p3 = p2 + 2*(dados_acao.iloc[-21:, 3].std())
+        p4 = p2 - 2*(dados_acao.iloc[-21:, 3].std())
+         """
         p1 = dados_acao.iloc[-9:, 3].mean()
         p2 = dados_acao.iloc[-21:, 3].mean()
         p3 = p2 + 2*(dados_acao.iloc[-21:, 3].std())
@@ -162,7 +168,7 @@ def resultados(request):
     
         for i in range(10):
             kfold = StratifiedKFold(
-            n_splits=20, shuffle=True, random_state=i)
+            n_splits=10, shuffle=True, random_state=i)
         resultados_naive = []
         matrizes = []
         for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
@@ -175,17 +181,21 @@ def resultados(request):
         media_naive = np.array(resultados_naive).mean()
         desvio_naive = np.array(resultados_naive).std()
         class_naive = classificador_naive.predict_proba([[p1, p2, p3, p4]])
+        score_naive = classificador_naive.score(X, y)
+        predict_class_naive = classificador_naive.predict(
+                [[p1, p2, p3, p4]])
+        
         if class_naive[0][0] > class_naive[0][1]:
             class_naive_verbose = 'compra'
         else:
             class_naive_verbose = 'venda'
-        
+
 
         ## Treinando usando arvores de decisao
     
         for i in range(10):
             kfold = StratifiedKFold(
-                n_splits=20, shuffle=True, random_state=i)
+                n_splits=10, shuffle=True, random_state=i)
             resultados_arvores = []
             matrizes = []
             for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
@@ -207,7 +217,7 @@ def resultados(request):
         ## Treinando usando random forest
         for i in range(10):
             kfold = StratifiedKFold(
-                n_splits=20, shuffle=True, random_state=i)
+                n_splits=10, shuffle=True, random_state=i)
             resultados_RFC = []
             matrizes = []
             for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
@@ -230,7 +240,7 @@ def resultados(request):
         for i in range(10):
 
             kfold = StratifiedKFold(
-                n_splits=20, shuffle=True, random_state=i)
+                n_splits=10, shuffle=True, random_state=i)
             resultados_KNN_classifier = []
             matrizes = []
             for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
@@ -253,7 +263,7 @@ def resultados(request):
         for i in range(5):
 
             kfold = StratifiedKFold(
-                n_splits=20, shuffle=True, random_state=i)
+                n_splits=10, shuffle=True, random_state=i)
             resultados_SVC = []
             matrizes = []
             for id_treino, id_teste in kfold.split(X, np.zeros(shape=(X.shape[0], 1))):
