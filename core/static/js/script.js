@@ -2,7 +2,6 @@
 
 
 window.onload = function(){
-    Swal.fire('olá')
     let spinnerBox = document.getElementById('spinner-box') 
     let buttonSearch = document.getElementById('button-search')
     let containerIndex = document.getElementById('container-index')
@@ -16,10 +15,3 @@ window.onload = function(){
     
 } 
 
-/* testar isso novamente, jogar um script dentro do código direto pra testar */
-/* let dataBox = document.getElementById('data-box')
-dataBox.onload = function(e){
-        console.log(e)
-        Swal.fire('oi')
-    }
- */

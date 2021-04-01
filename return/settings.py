@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+from dj_database_url import parse as dburl
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,12 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'akuc0#s$1foj+6*nhk75&(0f0w!06)+2+cm=husle2r25sybqg'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
+#código antigo
+#SECRET_KEY = 'akuc0#s$1foj+6*nhk75&(0f0w!06)+2+cm=husle2r25sybqg'
+#DEBUG = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1:8000', '127.0.0.1', '192.168.0.107']
+ALLOWED_HOSTS = ['127.0.0.1:8000', '127.0.0.1', '192.168.0.107', 'robsonreturn.herokuapp.com/']
 
 
 # Application definition
@@ -77,13 +81,16 @@ WSGI_APPLICATION = 'return.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+## código antigo
+''' DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+} '''
+
+DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 
 # Password validation
@@ -127,4 +134,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     '/code/pessoais/myvenv/return/core/static/css', '/code/pessoais/myvenv/return/core/static/js'
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
