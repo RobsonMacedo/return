@@ -17,11 +17,11 @@ import os
 
 
 
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -136,8 +136,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / "static", '/code/pessoais/myvenv/return/core/staticfiles/css', '/code/pessoais/myvenv/return/core/staticfiles/js']
+STATICFILES_DIRS = [(os.path.join(BASE_DIR, "static")), '/code/pessoais/myvenv/return/static/css', '/code/pessoais/myvenv/return/static/js']
 
 
-STATIC_ROOT = [BASE_DIR / 'staticfiles']
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
