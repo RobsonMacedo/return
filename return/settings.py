@@ -34,7 +34,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 #SECRET_KEY = 'akuc0#s$1foj+6*nhk75&(0f0w!06)+2+cm=husle2r25sybqg'
 #DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1:8000', '127.0.0.1', '192.168.0.107', 'robsonreturn.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1:8000', '127.0.0.1', '192.168.0.107', 'robsonreturn.herokuapp.com']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'crispy_forms',
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
