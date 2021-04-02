@@ -14,9 +14,9 @@ from pathlib import Path
 from decouple import config
 from dj_database_url import parse as dburl
 import os
-import django_heroku
 
-django_heroku.settings(locals())
+
+
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
