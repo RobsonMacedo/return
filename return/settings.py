@@ -138,5 +138,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static", '/code/pessoais/myvenv/return/core/static/css', '/code/pessoais/myvenv/return/core/static/js']
 
 
-STATIC_ROOT = [BASE_DIR / 'static']
+STATIC_ROOT = [BASE_DIR / 'staticfiles']
 
