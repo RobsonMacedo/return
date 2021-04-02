@@ -136,7 +136,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / "static", '/code/pessoais/myvenv/return/core/static/css', '/code/pessoais/myvenv/return/core/static/js']
+STATICFILES_DIRS = [BASE_DIR / "static", '/code/pessoais/myvenv/return/core/staticfiles/css', '/code/pessoais/myvenv/return/core/staticfiles/js']
 
 
 STATIC_ROOT = [BASE_DIR / 'staticfiles']
