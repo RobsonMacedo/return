@@ -14,6 +14,9 @@ from pathlib import Path
 from decouple import config
 from dj_database_url import parse as dburl
 import os
+import django_heroku
+
+django_heroku.settings(locals())
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
