@@ -135,9 +135,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
+''' STATICFILES_DIRS = [
     '/code/pessoais/myvenv/return/core/static/css', '/code/pessoais/myvenv/return/core/static/js'
-]
+] '''
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
