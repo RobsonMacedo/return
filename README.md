@@ -1,2 +1,2 @@
 # @return - É pra comprar ou pra vender?
-Este é o @return, um projeto pessoal, programado em python/django que surgiu com uma necessidade minha (que gosto muito do mercado de ações) de tentar prever se no dia corrente devo comprar ou vender determinado papel (ação).  
+Este é o **@return**, um projeto pessoal, programado em **python/django** que surgiu com uma necessidade minha (que gosto muito do mercado de ações) de tentar prever se no dia corrente devo **comprar** ou **vender** determinado papel (ação).  
